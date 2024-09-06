@@ -1,19 +1,26 @@
+using ErrorOr;
 using NotificationApp.Application.Interfaces;
 
 namespace NotificationApp.Application.Services;
 
 public class EmailService : IEmailSender
 {
-    public Task SendEmailAsync(string userId, string message)
+    public async Task<ErrorOr<bool>> SendEmailAsync(string userId, string message)
     {
         if (string.IsNullOrWhiteSpace(userId))
-            throw new ArgumentException("User ID cannot be null or empty.", nameof(userId));
+        {
+            return Error.Validation("InvalidUserId", "User ID cannot be null or empty.");
+        }
 
         if (string.IsNullOrWhiteSpace(message))
-            throw new ArgumentException("Email content cannot be null or empty.", nameof(message));
+        {
+            return Error.Validation("InvalidMessage", "Email content cannot be null or empty.");
+        }
+        await Task.Run(() =>
+      {
+          Console.WriteLine($"Sending email to {userId}: {message}");
+      });
 
-        Console.WriteLine($"Sending email to {userId}: {message}");
-
-        return Task.CompletedTask;
+        return true;
     }
 }

@@ -1,3 +1,4 @@
+using ErrorOr;
 using NotificationApp.Application.Interfaces;
 using NotificationApp.Domain.Enums;
 
@@ -15,15 +16,15 @@ public class NotificationService : INotificationService
         _emailSender = emailSender;
     }
 
-    public async Task SendAsync(NotificationType type,
+    public async Task<ErrorOr<bool>> SendAsync(NotificationType type,
                                 string userId,
                                 string message)
     {
         if (await _rateLimitService.IsRateLimited(type, userId))
         {
-            throw new InvalidOperationException("Rate limit exceeded");
+            return Error.Validation("Rate limit exceeded", "Rate limit exceeded for the given notification type and user.");
         }
 
-        await _emailSender.SendEmailAsync(userId, message);
+        return await _emailSender.SendEmailAsync(userId, message);
     }
 }

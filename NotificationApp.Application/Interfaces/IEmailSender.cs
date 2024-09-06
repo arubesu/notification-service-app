@@ -1,6 +1,8 @@
+using ErrorOr;
+
 namespace NotificationApp.Application.Interfaces;
 
 public interface IEmailSender
 {
-    Task SendEmailAsync(string userId, string message);
+    Task<ErrorOr<bool>> SendEmailAsync(string userId, string message);
 }

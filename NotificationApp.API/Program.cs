@@ -21,7 +21,18 @@ var app = builder.Build();
 
 app.MapPost("api/send-notification", async (NotificationRequest request, INotificationService notificationService) =>
 {
-    await notificationService.SendAsync(request.Type, request.UserId, request.Message);
+    var result = await notificationService.SendAsync(request.Type, request.UserId, request.Message);
+
+    if (result.IsError)
+    {
+        if (result.Errors.All(errors => errors.Type == ErrorOr.ErrorType.Validation))
+        {
+            return Results.BadRequest(new { Message = result.Errors });
+        }
+
+        return Results.StatusCode(500);
+    }
+
     return Results.Ok(new { Message = "Notification sent successfully!" });
 });
 
