@@ -10,7 +10,7 @@
 This project implements a notification service using .NET 8 Minimal APIs, along with a custom rate-limiting mechanism.
 
   
-
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Notification%20Service&uri=https%3A%2F%2Fraw.githubusercontent.com%2Farubesu%2Fnotification-service-app%2Fmain%2Fapi.json)
   
 
 ## Features
