@@ -25,6 +25,11 @@ app.MapPost("api/send-notification", async (NotificationRequest request, INotifi
 
     if (result.IsError)
     {
+        if (result.Errors.Any(errors => errors.Code == "Rate limit exceeded"))
+        {
+            return Results.Problem("Rate limit exceeded", statusCode: 429);
+        }
+
         if (result.Errors.All(errors => errors.Type == ErrorOr.ErrorType.Validation))
         {
             return Results.BadRequest(new { Message = result.Errors });
