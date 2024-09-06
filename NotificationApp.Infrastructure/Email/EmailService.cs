@@ -1,6 +1,6 @@
 using NotificationApp.Application.Interfaces;
 
-namespace NotificationApp.Application.Services;
+namespace NotificationApp.Infrastructure.Email;
 
 public class EmailService : IEmailSender
 {
